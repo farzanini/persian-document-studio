@@ -35,17 +35,17 @@ const DocumentPreview = ({
   return (
     <section className="flex-1 bg-slate-900 flex flex-col items-center p-8 overflow-y-auto relative">
       {/* Zoom Level Indicator */}
-      <div className="flex items-center gap-3 bg-slate-950 px-4 py-2 rounded-full mb-6 sticky top-0 z-40 border border-slate-800 shadow-xl">
+      <div className="flex items-center gap-3 bg-slate-950/80 backdrop-blur-md px-3.5 py-1.5 rounded-full mb-6 sticky top-0 z-40 border border-slate-800/80 shadow-2xl transition-all">
         <button
           onClick={() => setZoom(Math.max(30, zoom - 5))}
-          className="p-1 hover:bg-slate-800 rounded text-slate-400 hover:text-white"
+          className="p-1 hover:bg-slate-800 rounded-full text-slate-400 hover:text-white transition-all cursor-pointer"
         >
           <ZoomOut className="w-4 h-4" />
         </button>
-        <span className="text-xs font-mono w-10 text-center">{zoom}%</span>
+        <span className="text-xs font-semibold font-mono w-10 text-center text-slate-200">{zoom}%</span>
         <button
           onClick={() => setZoom(Math.min(100, zoom + 5))}
-          className="p-1 hover:bg-slate-800 rounded text-slate-400 hover:text-white"
+          className="p-1 hover:bg-slate-800 rounded-full text-slate-400 hover:text-white transition-all cursor-pointer"
         >
           <ZoomIn className="w-4 h-4" />
         </button>
@@ -71,7 +71,7 @@ const DocumentPreview = ({
           style={{
             boxShadow: isExporting
               ? "none"
-              : "0 25px 50px -12px rgb(0 0 0 / 0.5)",
+              : "0 20px 45px -10px rgba(0, 0, 0, 0.45), 0 10px 20px -5px rgba(0, 0, 0, 0.3)",
             boxSizing: "border-box",
             margin: 0,
             padding: 0,
@@ -102,7 +102,7 @@ const DocumentPreview = ({
           >
             <div
               className={`flex items-center justify-center text-center p-4 transition-all ${
-                dragMode ? "border border-dashed border-indigo-500 bg-indigo-500/5" : ""
+                dragMode ? "border border-dashed border-indigo-500/60 bg-indigo-500/5 rounded-xl shadow-[0_0_15px_rgba(99,102,241,0.03)]" : ""
               }`}
               style={{
                 width: `${posCoverTitle.w}px`,
@@ -131,7 +131,7 @@ const DocumentPreview = ({
             >
               <div
                 className={`flex items-center justify-center p-2 transition-all ${
-                  dragMode ? "border border-dashed border-amber-500 bg-amber-500/5" : ""
+                  dragMode ? "border border-dashed border-amber-500/60 bg-amber-500/5 rounded-xl shadow-[0_0_15px_rgba(245,158,11,0.03)]" : ""
                 }`}
                 style={{
                   width: `${posPartnerLogo.size}px`,
@@ -145,7 +145,7 @@ const DocumentPreview = ({
                     alt="Partner Logo"
                   />
                 ) : (
-                  <div className="border border-dashed border-slate-300 w-full h-full rounded-lg flex items-center justify-center text-[9px] text-slate-400 bg-slate-50 text-center font-bold">
+                  <div className="border border-dashed border-slate-200 w-full h-full rounded-lg flex items-center justify-center text-[9px] text-slate-400 bg-slate-50/50 text-center font-semibold">
                     لوگوی شرکت همکار <br /> (اینجا قرار می‌گیرد)
                   </div>
                 )}
@@ -164,8 +164,8 @@ const DocumentPreview = ({
             onDrag={(x, y) => setPosCoverDate({ ...posCoverDate, x, y })}
           >
             <div
-              className={`w-[794px] text-center font-bold text-slate-800 text-sm py-1 ${
-                dragMode ? "border border-dashed border-emerald-500 bg-emerald-500/5" : ""
+              className={`w-[794px] text-center font-bold text-slate-800 text-sm py-1 transition-all ${
+                dragMode ? "border border-dashed border-emerald-500/60 bg-emerald-500/5 rounded shadow-[0_0_15px_rgba(16,185,129,0.03)]" : ""
               }`}
             >
               {coverDate || "۱۴۰۵"}
@@ -185,7 +185,7 @@ const DocumentPreview = ({
               style={{
                 boxShadow: isExporting
                   ? "none"
-                  : "0 25px 50px -12px rgb(0 0 0 / 0.5)",
+                  : "0 20px 45px -10px rgba(0, 0, 0, 0.45), 0 10px 20px -5px rgba(0, 0, 0, 0.3)",
                 boxSizing: "border-box",
                 margin: 0,
                 padding: 0,
@@ -218,7 +218,7 @@ const DocumentPreview = ({
               >
                 <div
                   className={`p-1.5 min-w-[280px] text-center rounded transition-all ${
-                    dragMode ? "border border-dashed border-indigo-500 bg-indigo-500/5" : ""
+                    dragMode ? "border border-dashed border-indigo-500/60 bg-indigo-500/5 rounded shadow-[0_0_15px_rgba(99,102,241,0.03)]" : ""
                   }`}
                 >
                   <h3 className="text-[13px] font-bold text-slate-800 leading-normal font-['Vazirmatn']">
