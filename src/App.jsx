@@ -3,6 +3,7 @@ import Header from "./components/Header";
 import Sidebar from "./components/Sidebar";
 import DocumentPreview from "./components/DocumentPreview";
 import { templates } from "./constants/templates";
+import { getCachedAsset, setCachedAsset, removeCachedAsset } from "./utils/db";
 
 export default function App() {
   const [dragMode, setDragMode] = useState(true);
@@ -15,6 +16,19 @@ export default function App() {
   const [customCoverBg, setCustomCoverBg] = useState(null);
   const [customSarbargBg, setCustomSarbargBg] = useState(null);
   const [partnerLogo, setPartnerLogo] = useState(null);
+
+  // Load cached templates/logo from IndexedDB on startup
+  useEffect(() => {
+    async function loadCachedFiles() {
+      const cover = await getCachedAsset("customCoverBg");
+      const sarbarg = await getCachedAsset("customSarbargBg");
+      const logo = await getCachedAsset("partnerLogo");
+      if (cover) setCustomCoverBg(cover);
+      if (sarbarg) setCustomSarbargBg(sarbarg);
+      if (logo) setPartnerLogo(logo);
+    }
+    loadCachedFiles();
+  }, []);
 
   // Content Variables
   const [coverTitle, setCoverTitle] = useState(
@@ -59,7 +73,11 @@ export default function App() {
     const file = e.target.files[0];
     if (file) {
       const reader = new FileReader();
-      reader.onload = (ev) => setCustomCoverBg(ev.target.result);
+      reader.onload = (ev) => {
+        const val = ev.target.result;
+        setCustomCoverBg(val);
+        setCachedAsset("customCoverBg", val);
+      };
       reader.readAsDataURL(file);
     }
   };
@@ -68,7 +86,11 @@ export default function App() {
     const file = e.target.files[0];
     if (file) {
       const reader = new FileReader();
-      reader.onload = (ev) => setCustomSarbargBg(ev.target.result);
+      reader.onload = (ev) => {
+        const val = ev.target.result;
+        setCustomSarbargBg(val);
+        setCachedAsset("customSarbargBg", val);
+      };
       reader.readAsDataURL(file);
     }
   };
@@ -77,14 +99,27 @@ export default function App() {
     const file = e.target.files[0];
     if (file) {
       const reader = new FileReader();
-      reader.onload = (ev) => setPartnerLogo(ev.target.result);
+      reader.onload = (ev) => {
+        const val = ev.target.result;
+        setPartnerLogo(val);
+        setCachedAsset("partnerLogo", val);
+      };
       reader.readAsDataURL(file);
     }
   };
 
-  const resetCoverBg = () => setCustomCoverBg(null);
-  const resetSarbargBg = () => setCustomSarbargBg(null);
-  const resetPartnerLogo = () => setPartnerLogo(null);
+  const resetCoverBg = () => {
+    setCustomCoverBg(null);
+    removeCachedAsset("customCoverBg");
+  };
+  const resetSarbargBg = () => {
+    setCustomSarbargBg(null);
+    removeCachedAsset("customSarbargBg");
+  };
+  const resetPartnerLogo = () => {
+    setPartnerLogo(null);
+    removeCachedAsset("partnerLogo");
+  };
 
   const paginateText = () => {
     // Standard page heights in pixels at 96 DPI
