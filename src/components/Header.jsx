@@ -1,4 +1,4 @@
-import React from "react";
+
 import { FileText, Unlock, Lock, RefreshCw, Download } from "lucide-react";
 
 const Header = ({ dragMode, setDragMode, generatePDF, isGenerating }) => {

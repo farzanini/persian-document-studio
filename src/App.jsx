@@ -1,9 +1,10 @@
-import React, { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import Header from "./components/Header";
 import Sidebar from "./components/Sidebar";
 import DocumentPreview from "./components/DocumentPreview";
 import { templates } from "./constants/templates";
 import { getCachedAsset, setCachedAsset, removeCachedAsset } from "./utils/db";
+import { paginateHtml } from "./utils/pagination";
 
 export default function App() {
   const [dragMode, setDragMode] = useState(true);
@@ -54,6 +55,7 @@ export default function App() {
   const [bodyText, setBodyText] = useState(templates.longContract);
 
   // Metadata items
+  const [showMetadata, setShowMetadata] = useState(false);
   const [metaDate, setMetaDate] = useState("۱۴۰۵/۰۳/۱۱");
   const [metaNumber, setMetaNumber] = useState("NT-405-102");
   const [metaAttachment, setMetaAttachment] = useState("دارد (یک برگ)");
@@ -65,6 +67,8 @@ export default function App() {
   const [marginBottom, setMarginBottom] = useState(150);
   const [marginRight, setMarginRight] = useState(100);
   const [marginLeft, setMarginLeft] = useState(85);
+  const [coverTitleColor, setCoverTitleColor] = useState("#0f172a");
+  const [bodyTextColor, setBodyTextColor] = useState("#1e293b");
 
   const pdfContainerRef = useRef(null);
 
@@ -121,47 +125,37 @@ export default function App() {
     removeCachedAsset("partnerLogo");
   };
 
-  const paginateText = () => {
-    // Standard page heights in pixels at 96 DPI
-    const estimatedLineHeight = fontSize * lineHeight;
-    const pageHeight = 1120 - marginTop - marginBottom;
-    const maxLinesPerPage = Math.max(
-      1,
-      Math.floor(pageHeight / estimatedLineHeight),
-    );
+  const [paginatedTextPages, setPaginatedTextPages] = useState([]);
+  const isFirstRender = useRef(true);
 
-    const lines = bodyText.split("\n");
-    const pages = [];
-    let currentPageLines = [];
-    let currentLineCount = 0;
+  useEffect(() => {
+    let active = true;
 
-    for (let i = 0; i < lines.length; i++) {
-      const rawLine = lines[i];
-      // Instead of character slicing, split lines logically by wrapping width
-      const lineLength = rawLine.length;
-      const wrapFactor = 70; // Heuristic word wrapping character threshold
-      const estimatedWraps =
-        lineLength === 0 ? 1 : Math.max(1, Math.ceil(lineLength / wrapFactor));
-
-      if (
-        currentLineCount + estimatedWraps > maxLinesPerPage &&
-        currentPageLines.length > 0
-      ) {
-        pages.push(currentPageLines.join("\n"));
-        currentPageLines = [rawLine];
-        currentLineCount = estimatedWraps;
-      } else {
-        currentPageLines.push(rawLine);
-        currentLineCount += estimatedWraps;
+    const runPagination = () => {
+      const pages = paginateHtml(bodyText, {
+        fontSize,
+        lineHeight,
+        marginTop,
+        marginBottom,
+        marginRight,
+        marginLeft,
+      });
+      if (active) {
+        setPaginatedTextPages(pages);
       }
-    }
-    if (currentPageLines.length > 0) {
-      pages.push(currentPageLines.join("\n"));
-    }
-    return pages;
-  };
+    };
 
-  const paginatedTextPages = paginateText();
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      runPagination();
+    } else {
+      const timer = setTimeout(runPagination, 150);
+      return () => {
+        active = false;
+        clearTimeout(timer);
+      };
+    }
+  }, [bodyText, fontSize, lineHeight, marginTop, marginBottom, marginRight, marginLeft]);
 
   const generatePDF = async () => {
     setIsGenerating(true);
@@ -237,6 +231,8 @@ export default function App() {
           setCoverTitle={setCoverTitle}
           coverDate={coverDate}
           setCoverDate={setCoverDate}
+          showMetadata={showMetadata}
+          setShowMetadata={setShowMetadata}
           metaDate={metaDate}
           setMetaDate={setMetaDate}
           metaNumber={metaNumber}
@@ -268,6 +264,10 @@ export default function App() {
           resetPartnerLogo={resetPartnerLogo}
           dragMode={dragMode}
           pageCount={paginatedTextPages.length}
+          coverTitleColor={coverTitleColor}
+          setCoverTitleColor={setCoverTitleColor}
+          bodyTextColor={bodyTextColor}
+          setBodyTextColor={setBodyTextColor}
         />
 
         <DocumentPreview
@@ -289,6 +289,7 @@ export default function App() {
           dragMode={dragMode}
           coverTitle={coverTitle}
           coverDate={coverDate}
+          showMetadata={showMetadata}
           metaDate={metaDate}
           metaNumber={metaNumber}
           metaAttachment={metaAttachment}
@@ -299,6 +300,8 @@ export default function App() {
           marginBottom={marginBottom}
           fontSize={fontSize}
           lineHeight={lineHeight}
+          coverTitleColor={coverTitleColor}
+          bodyTextColor={bodyTextColor}
         />
       </main>
     </div>

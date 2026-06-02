@@ -1,4 +1,4 @@
-import React from "react";
+
 import { ZoomIn, ZoomOut } from "lucide-react";
 import Draggable from "./Draggable";
 
@@ -21,6 +21,7 @@ const DocumentPreview = ({
   dragMode,
   coverTitle,
   coverDate,
+  showMetadata,
   metaDate,
   metaNumber,
   metaAttachment,
@@ -31,6 +32,8 @@ const DocumentPreview = ({
   marginBottom,
   fontSize,
   lineHeight,
+  coverTitleColor,
+  bodyTextColor,
 }) => {
   return (
     <section className="flex-1 bg-slate-900 flex flex-col items-center p-8 overflow-y-auto relative">
@@ -109,7 +112,10 @@ const DocumentPreview = ({
                 height: `${posCoverTitle.h}px`,
               }}
             >
-              <h2 className="text-2xl font-bold text-slate-900 leading-relaxed whitespace-pre-wrap font-['Vazirmatn'] text-center">
+              <h2
+                className="text-2xl font-bold leading-relaxed whitespace-pre-wrap font-['Vazirmatn'] text-center"
+                style={{ color: coverTitleColor }}
+              >
                 {coverTitle ||
                   (isExporting ? "" : "عنوان سند را مشخص نمایید")}
               </h2>
@@ -228,24 +234,26 @@ const DocumentPreview = ({
               </Draggable>
 
               {/* Overlaid Metadata values - pre-printed on each page of letterhead */}
-              <div
-                className="absolute text-slate-900 font-mono text-[12.5px] font-bold"
-                style={{ top: "23px", right: "47px", width: "135px" }}
-              >
-                <div className="h-[20px] flex items-center justify-end pr-2 pl-2 overflow-hidden">
-                  {metaDate}
+              {showMetadata && (
+                <div
+                  className="absolute text-slate-900 font-mono text-[12.5px] font-bold"
+                  style={{ top: "23px", right: "47px", width: "135px" }}
+                >
+                  <div className="h-[20px] flex items-center justify-end pr-2 pl-2 overflow-hidden">
+                    {metaDate}
+                  </div>
+                  <div className="h-[20px] mt-[10px] flex items-center justify-end pr-2 pl-2 overflow-hidden text-[11px]">
+                    {metaNumber}
+                  </div>
+                  <div className="h-[20px] mt-[10px] flex items-center justify-end pr-2 pl-2 overflow-hidden text-[11.5px] font-['Vazirmatn']">
+                    {metaAttachment}
+                  </div>
                 </div>
-                <div className="h-[20px] mt-[10px] flex items-center justify-end pr-2 pl-2 overflow-hidden text-[11px]">
-                  {metaNumber}
-                </div>
-                <div className="h-[20px] mt-[10px] flex items-center justify-end pr-2 pl-2 overflow-hidden text-[11.5px] font-['Vazirmatn']">
-                  {metaAttachment}
-                </div>
-              </div>
+              )}
 
               {/* STRICT ARABIC/PERSIAN RTL ALIGNED CONTENT BLOCK */}
               <div
-                className="absolute select-text text-slate-800 font-normal break-words whitespace-pre-wrap"
+                className="absolute select-text font-normal break-words document-content"
                 dir="rtl"
                 style={{
                   top: `${marginTop}px`,
@@ -260,10 +268,10 @@ const DocumentPreview = ({
                   unicodeBidi: "embed",
                   overflow: "hidden",
                   letterSpacing: "normal",
+                  color: bodyTextColor,
                 }}
-              >
-                {pageText}
-              </div>
+                dangerouslySetInnerHTML={{ __html: pageText }}
+              />
 
               {/* Optional page counter indicator at bottom (hidden on final PDF export) */}
               {!isExporting && (

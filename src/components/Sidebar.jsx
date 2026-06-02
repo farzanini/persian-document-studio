@@ -1,4 +1,4 @@
-import React from "react";
+
 import {
   Type,
   Sliders,
@@ -10,6 +10,7 @@ import {
   Sparkles,
 } from "lucide-react";
 import { templates } from "../constants/templates";
+import RichTextEditor from "./RichTextEditor";
 
 const Sidebar = ({
   activeTab,
@@ -18,6 +19,8 @@ const Sidebar = ({
   setCoverTitle,
   coverDate,
   setCoverDate,
+  showMetadata,
+  setShowMetadata,
   metaDate,
   setMetaDate,
   metaNumber,
@@ -47,8 +50,11 @@ const Sidebar = ({
   partnerLogo,
   handlePartnerLogoUpload,
   resetPartnerLogo,
-  dragMode,
   pageCount,
+  coverTitleColor,
+  setCoverTitleColor,
+  bodyTextColor,
+  setBodyTextColor,
 }) => {
   return (
     <aside className="w-full lg:w-[420px] bg-slate-950 border-l border-slate-900/80 overflow-y-auto p-6 space-y-6 shrink-0">
@@ -146,41 +152,55 @@ const Sidebar = ({
               />
             </div>
 
-            <div className="grid grid-cols-3 gap-2">
-              <div>
-                <label className="text-[9px] text-slate-400 mb-1.5 block font-bold">
-                  تاریخ سربرگ
-                </label>
-                <input
-                  type="text"
-                  value={metaDate}
-                  onChange={(e) => setMetaDate(e.target.value)}
-                  className="w-full bg-slate-900/60 border border-slate-800 rounded-xl p-2 text-xs focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 outline-none text-slate-200 text-center font-mono transition-all"
-                />
+            <label className="flex items-center gap-3 bg-slate-900/40 p-3 rounded-xl border border-slate-800/80 cursor-pointer hover:bg-slate-900/60 transition-all select-none">
+              <input
+                type="checkbox"
+                checked={showMetadata}
+                onChange={(e) => setShowMetadata(e.target.checked)}
+                className="w-4 h-4 rounded border-slate-800 bg-slate-950 text-indigo-600 focus:ring-indigo-500 focus:ring-offset-slate-950 cursor-pointer"
+              />
+              <span className="text-[11px] text-slate-300 font-bold">
+                فعال‌سازی اطلاعات سربرگ (تاریخ، شماره، پیوست)
+              </span>
+            </label>
+
+            {showMetadata && (
+              <div className="grid grid-cols-3 gap-2 bg-slate-900/20 p-2.5 rounded-xl border border-slate-800/50">
+                <div>
+                  <label className="text-[9px] text-slate-400 mb-1.5 block font-bold">
+                    تاریخ سربرگ
+                  </label>
+                  <input
+                    type="text"
+                    value={metaDate}
+                    onChange={(e) => setMetaDate(e.target.value)}
+                    className="w-full bg-slate-900/60 border border-slate-800 rounded-xl p-2 text-xs focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 outline-none text-slate-200 text-center font-mono transition-all"
+                  />
+                </div>
+                <div>
+                  <label className="text-[9px] text-slate-400 mb-1.5 block font-bold">
+                    شماره نامه
+                  </label>
+                  <input
+                    type="text"
+                    value={metaNumber}
+                    onChange={(e) => setMetaNumber(e.target.value)}
+                    className="w-full bg-slate-900/60 border border-slate-800 rounded-xl p-2 text-xs focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 outline-none text-slate-200 text-center font-mono transition-all"
+                  />
+                </div>
+                <div>
+                  <label className="text-[9px] text-slate-400 mb-1.5 block font-bold">
+                    پیوست
+                  </label>
+                  <input
+                    type="text"
+                    value={metaAttachment}
+                    onChange={(e) => setMetaAttachment(e.target.value)}
+                    className="w-full bg-slate-900/60 border border-slate-800 rounded-xl p-2 text-xs focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 outline-none text-slate-200 text-center transition-all"
+                  />
+                </div>
               </div>
-              <div>
-                <label className="text-[9px] text-slate-400 mb-1.5 block font-bold">
-                  شماره نامه
-                </label>
-                <input
-                  type="text"
-                  value={metaNumber}
-                  onChange={(e) => setMetaNumber(e.target.value)}
-                  className="w-full bg-slate-900/60 border border-slate-800 rounded-xl p-2 text-xs focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 outline-none text-slate-200 text-center font-mono transition-all"
-                />
-              </div>
-              <div>
-                <label className="text-[9px] text-slate-400 mb-1.5 block font-bold">
-                  پیوست
-                </label>
-                <input
-                  type="text"
-                  value={metaAttachment}
-                  onChange={(e) => setMetaAttachment(e.target.value)}
-                  className="w-full bg-slate-900/60 border border-slate-800 rounded-xl p-2 text-xs focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 outline-none text-slate-200 text-center transition-all"
-                />
-              </div>
-            </div>
+            )}
 
             <div className="pt-3 border-t border-slate-800/80">
               <div className="flex justify-between items-center mb-1.5">
@@ -202,10 +222,9 @@ const Sidebar = ({
                   </button>
                 </div>
               </div>
-              <textarea
+              <RichTextEditor
                 value={bodyText}
-                onChange={(e) => setBodyText(e.target.value)}
-                className="w-full bg-slate-900/60 border border-slate-800 rounded-xl p-3 text-xs leading-loose h-64 outline-none font-mono text-slate-200 focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 transition-all"
+                onChange={setBodyText}
                 placeholder="محل درج مفاد موافقت‌نامه..."
               />
             </div>
@@ -312,6 +331,87 @@ const Sidebar = ({
                     onChange={(e) => setMarginLeft(parseInt(e.target.value))}
                     className="w-full accent-indigo-500 h-1 bg-slate-800 rounded-lg appearance-none cursor-pointer focus:outline-none"
                   />
+                </div>
+              </div>
+            </div>
+
+            {/* Colors customizer section */}
+            <div className="pt-3 border-t border-slate-800/80 space-y-4">
+              <span className="text-[11px] text-slate-400 font-bold block">
+                تنظیم رنگ نوشته‌ها:
+              </span>
+
+              {/* Cover Title Color Customizer */}
+              <div className="space-y-2">
+                <div className="flex justify-between items-center text-[10px] text-slate-500 font-mono">
+                  <span>رنگ عنوان جلد</span>
+                  <span className="text-slate-400 font-bold">{coverTitleColor}</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <input
+                    type="color"
+                    value={coverTitleColor}
+                    onChange={(e) => setCoverTitleColor(e.target.value)}
+                    className="w-8 h-8 rounded-lg bg-slate-900 border border-slate-800 cursor-pointer overflow-hidden p-0"
+                  />
+                  <div className="flex gap-1.5 flex-1">
+                    {[
+                      { name: "تیره", value: "#0f172a" },
+                      { name: "سفید", value: "#ffffff" },
+                      { name: "سرمه‌ای", value: "#1e3a8a" },
+                      { name: "طلایی", value: "#854d0e" },
+                    ].map((preset) => (
+                      <button
+                        key={preset.value}
+                        onClick={() => setCoverTitleColor(preset.value)}
+                        className={`text-[9px] px-2 py-1 rounded-md border text-slate-300 transition-all cursor-pointer ${
+                          coverTitleColor.toLowerCase() === preset.value.toLowerCase()
+                            ? "bg-indigo-600/30 border-indigo-500 text-white"
+                            : "bg-slate-900 border-slate-800 hover:border-slate-700"
+                        }`}
+                        title={preset.name}
+                      >
+                        {preset.name}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* Body Text Color Customizer */}
+              <div className="space-y-2">
+                <div className="flex justify-between items-center text-[10px] text-slate-500 font-mono">
+                  <span>رنگ متن سربرگ</span>
+                  <span className="text-slate-400 font-bold">{bodyTextColor}</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <input
+                    type="color"
+                    value={bodyTextColor}
+                    onChange={(e) => setBodyTextColor(e.target.value)}
+                    className="w-8 h-8 rounded-lg bg-slate-900 border border-slate-800 cursor-pointer overflow-hidden p-0"
+                  />
+                  <div className="flex gap-1.5 flex-1">
+                    {[
+                      { name: "تیره", value: "#1e293b" },
+                      { name: "سفید", value: "#ffffff" },
+                      { name: "سرمه‌ای", value: "#1e3a8a" },
+                      { name: "آبی", value: "#3b82f6" },
+                    ].map((preset) => (
+                      <button
+                        key={preset.value}
+                        onClick={() => setBodyTextColor(preset.value)}
+                        className={`text-[9px] px-2 py-1 rounded-md border text-slate-300 transition-all cursor-pointer ${
+                          bodyTextColor.toLowerCase() === preset.value.toLowerCase()
+                            ? "bg-indigo-600/30 border-indigo-500 text-white"
+                            : "bg-slate-900 border-slate-800 hover:border-slate-700"
+                        }`}
+                        title={preset.name}
+                      >
+                        {preset.name}
+                      </button>
+                    ))}
+                  </div>
                 </div>
               </div>
             </div>

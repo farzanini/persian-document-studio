@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 
 const Draggable = ({ id, x, y, onDrag, children, enabled, label, zoom }) => {
   const [isDragging, setIsDragging] = useState(false);
