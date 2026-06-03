@@ -1,4 +1,3 @@
-
 import {
   Type,
   Sliders,
@@ -19,8 +18,6 @@ const Sidebar = ({
   setCoverTitle,
   coverDate,
   setCoverDate,
-  showMetadata,
-  setShowMetadata,
   metaDate,
   setMetaDate,
   metaNumber,
@@ -57,7 +54,7 @@ const Sidebar = ({
   setBodyTextColor,
 }) => {
   return (
-    <aside className="w-full lg:w-[420px] bg-slate-950 border-l border-slate-900/80 overflow-y-auto p-6 space-y-6 shrink-0">
+    <aside className="w-full lg:w-105 bg-slate-950 border-l border-slate-900/80 overflow-y-auto p-6 space-y-6 shrink-0">
       {/* Navigation Tabs */}
       <div className="grid grid-cols-4 gap-1 bg-slate-900/60 p-1.5 rounded-xl border border-slate-800/80">
         <button
@@ -152,55 +149,41 @@ const Sidebar = ({
               />
             </div>
 
-            <label className="flex items-center gap-3 bg-slate-900/40 p-3 rounded-xl border border-slate-800/80 cursor-pointer hover:bg-slate-900/60 transition-all select-none">
-              <input
-                type="checkbox"
-                checked={showMetadata}
-                onChange={(e) => setShowMetadata(e.target.checked)}
-                className="w-4 h-4 rounded border-slate-800 bg-slate-950 text-indigo-600 focus:ring-indigo-500 focus:ring-offset-slate-950 cursor-pointer"
-              />
-              <span className="text-[11px] text-slate-300 font-bold">
-                فعال‌سازی اطلاعات سربرگ (تاریخ، شماره، پیوست)
-              </span>
-            </label>
-
-            {showMetadata && (
-              <div className="grid grid-cols-3 gap-2 bg-slate-900/20 p-2.5 rounded-xl border border-slate-800/50">
-                <div>
-                  <label className="text-[9px] text-slate-400 mb-1.5 block font-bold">
-                    تاریخ سربرگ
-                  </label>
-                  <input
-                    type="text"
-                    value={metaDate}
-                    onChange={(e) => setMetaDate(e.target.value)}
-                    className="w-full bg-slate-900/60 border border-slate-800 rounded-xl p-2 text-xs focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 outline-none text-slate-200 text-center font-mono transition-all"
-                  />
-                </div>
-                <div>
-                  <label className="text-[9px] text-slate-400 mb-1.5 block font-bold">
-                    شماره نامه
-                  </label>
-                  <input
-                    type="text"
-                    value={metaNumber}
-                    onChange={(e) => setMetaNumber(e.target.value)}
-                    className="w-full bg-slate-900/60 border border-slate-800 rounded-xl p-2 text-xs focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 outline-none text-slate-200 text-center font-mono transition-all"
-                  />
-                </div>
-                <div>
-                  <label className="text-[9px] text-slate-400 mb-1.5 block font-bold">
-                    پیوست
-                  </label>
-                  <input
-                    type="text"
-                    value={metaAttachment}
-                    onChange={(e) => setMetaAttachment(e.target.value)}
-                    className="w-full bg-slate-900/60 border border-slate-800 rounded-xl p-2 text-xs focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 outline-none text-slate-200 text-center transition-all"
-                  />
-                </div>
+            <div className="grid grid-cols-3 gap-2">
+              <div>
+                <label className="text-[9px] text-slate-400 mb-1.5 block font-bold">
+                  تاریخ سربرگ
+                </label>
+                <input
+                  type="text"
+                  value={metaDate}
+                  onChange={(e) => setMetaDate(e.target.value)}
+                  className="w-full bg-slate-900/60 border border-slate-800 rounded-xl p-2 text-xs focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 outline-none text-slate-200 text-center font-mono transition-all"
+                />
               </div>
-            )}
+              <div>
+                <label className="text-[9px] text-slate-400 mb-1.5 block font-bold">
+                  شماره نامه
+                </label>
+                <input
+                  type="text"
+                  value={metaNumber}
+                  onChange={(e) => setMetaNumber(e.target.value)}
+                  className="w-full bg-slate-900/60 border border-slate-800 rounded-xl p-2 text-xs focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 outline-none text-slate-200 text-center font-mono transition-all"
+                />
+              </div>
+              <div>
+                <label className="text-[9px] text-slate-400 mb-1.5 block font-bold">
+                  پیوست
+                </label>
+                <input
+                  type="text"
+                  value={metaAttachment}
+                  onChange={(e) => setMetaAttachment(e.target.value)}
+                  className="w-full bg-slate-900/60 border border-slate-800 rounded-xl p-2 text-xs focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 outline-none text-slate-200 text-center transition-all"
+                />
+              </div>
+            </div>
 
             <div className="pt-3 border-t border-slate-800/80">
               <div className="flex justify-between items-center mb-1.5">
@@ -236,7 +219,8 @@ const Sidebar = ({
       {activeTab === "layout" && (
         <div className="space-y-4">
           <h3 className="text-xs font-bold text-slate-400 uppercase tracking-widest flex items-center gap-2">
-            <Sliders className="w-4 h-4 text-indigo-400" /> تنظیمات فاصله‌گذاری و قلم
+            <Sliders className="w-4 h-4 text-indigo-400" /> تنظیمات فاصله‌گذاری
+            و قلم
           </h3>
 
           <div className="space-y-4 bg-slate-900/40 p-4 rounded-xl border border-slate-800/80">
@@ -345,7 +329,9 @@ const Sidebar = ({
               <div className="space-y-2">
                 <div className="flex justify-between items-center text-[10px] text-slate-500 font-mono">
                   <span>رنگ عنوان جلد</span>
-                  <span className="text-slate-400 font-bold">{coverTitleColor}</span>
+                  <span className="text-slate-400 font-bold">
+                    {coverTitleColor}
+                  </span>
                 </div>
                 <div className="flex items-center gap-2">
                   <input
@@ -365,7 +351,8 @@ const Sidebar = ({
                         key={preset.value}
                         onClick={() => setCoverTitleColor(preset.value)}
                         className={`text-[9px] px-2 py-1 rounded-md border text-slate-300 transition-all cursor-pointer ${
-                          coverTitleColor.toLowerCase() === preset.value.toLowerCase()
+                          coverTitleColor.toLowerCase() ===
+                          preset.value.toLowerCase()
                             ? "bg-indigo-600/30 border-indigo-500 text-white"
                             : "bg-slate-900 border-slate-800 hover:border-slate-700"
                         }`}
@@ -382,7 +369,9 @@ const Sidebar = ({
               <div className="space-y-2">
                 <div className="flex justify-between items-center text-[10px] text-slate-500 font-mono">
                   <span>رنگ متن سربرگ</span>
-                  <span className="text-slate-400 font-bold">{bodyTextColor}</span>
+                  <span className="text-slate-400 font-bold">
+                    {bodyTextColor}
+                  </span>
                 </div>
                 <div className="flex items-center gap-2">
                   <input
@@ -402,7 +391,8 @@ const Sidebar = ({
                         key={preset.value}
                         onClick={() => setBodyTextColor(preset.value)}
                         className={`text-[9px] px-2 py-1 rounded-md border text-slate-300 transition-all cursor-pointer ${
-                          bodyTextColor.toLowerCase() === preset.value.toLowerCase()
+                          bodyTextColor.toLowerCase() ===
+                          preset.value.toLowerCase()
                             ? "bg-indigo-600/30 border-indigo-500 text-white"
                             : "bg-slate-900 border-slate-800 hover:border-slate-700"
                         }`}
@@ -424,10 +414,12 @@ const Sidebar = ({
         <div className="space-y-5">
           <div>
             <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider flex items-center gap-2 mb-2">
-              <Layout className="w-4 h-4 text-indigo-400" /> قالب طرح جلد (cover.png)
+              <Layout className="w-4 h-4 text-indigo-400" /> قالب طرح جلد
+              (cover.png)
             </h3>
             <p className="text-[10px] text-slate-500 mb-3 leading-relaxed">
-              یک عکس متناسب با ابعاد A4 آپلود کنید تا جایگزین تصویر پیش‌فرض جلد گردد.
+              یک عکس متناسب با ابعاد A4 آپلود کنید تا جایگزین تصویر پیش‌فرض جلد
+              گردد.
             </p>
 
             <label className="flex flex-col items-center justify-center py-5 border border-dashed border-slate-800 hover:border-indigo-500/50 rounded-xl bg-slate-900/40 hover:bg-slate-900/80 cursor-pointer transition-all group">
@@ -460,10 +452,12 @@ const Sidebar = ({
 
           <div className="pt-4 border-t border-slate-800/80">
             <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider flex items-center gap-2 mb-2">
-              <Layout className="w-4 h-4 text-indigo-400" /> قالب سربرگ (sarbarg.png)
+              <Layout className="w-4 h-4 text-indigo-400" /> قالب سربرگ
+              (sarbarg.png)
             </h3>
             <p className="text-[10px] text-slate-500 mb-3 leading-relaxed">
-              یک عکس متناسب با ابعاد A4 آپلود کنید تا جایگزین تصویر پیش‌فرض سربرگ گردد.
+              یک عکس متناسب با ابعاد A4 آپلود کنید تا جایگزین تصویر پیش‌فرض
+              سربرگ گردد.
             </p>
 
             <label className="flex flex-col items-center justify-center py-5 border border-dashed border-slate-800 hover:border-indigo-500/50 rounded-xl bg-slate-900/40 hover:bg-slate-900/80 cursor-pointer transition-all group">
@@ -500,7 +494,8 @@ const Sidebar = ({
       {activeTab === "logos" && (
         <div className="space-y-4">
           <h3 className="text-xs font-bold text-slate-400 uppercase tracking-widest flex items-center gap-2">
-            <ImageIcon className="w-4 h-4 text-indigo-400" /> آپلود لوگوی شرکت همکار
+            <ImageIcon className="w-4 h-4 text-indigo-400" /> آپلود لوگوی شرکت
+            همکار
           </h3>
           <p className="text-[10px] text-slate-500 leading-relaxed">
             لوگوی همکار در صفحه جلد مستقیماً رو‌به‌روی لوگوی اصلی قرار می‌گیرد.
@@ -535,7 +530,8 @@ const Sidebar = ({
             <div className="flex items-start gap-2.5 p-3 bg-amber-500/10 border border-amber-500/20 text-amber-300 rounded-xl text-[10px] leading-relaxed">
               <EyeOff className="w-4 h-4 shrink-0 mt-0.5" />
               <span>
-                در صورت عدم بارگذاری لوگو، کادر مربوطه در نسخه نهایی PDF خروجی مخفی خواهد شد.
+                در صورت عدم بارگذاری لوگو، کادر مربوطه در نسخه نهایی PDF خروجی
+                مخفی خواهد شد.
               </span>
             </div>
           )}
@@ -547,7 +543,9 @@ const Sidebar = ({
           <Sparkles className="w-4 h-4 shrink-0 mt-0.5 text-indigo-400 animate-pulse" />
           <p className="text-[11px] leading-relaxed">
             <strong>نکته کاربردی:</strong> کلید{" "}
-            <span className="text-amber-400 font-bold">حالت جابجایی</span> را در بالا فعال بگذارید تا بتوانید المان‌های متنی و لوگو را با درگ‌ کردن جابجا کنید.
+            <span className="text-amber-400 font-bold">حالت جابجایی</span> را در
+            بالا فعال بگذارید تا بتوانید المان‌های متنی و لوگو را با درگ‌ کردن
+            جابجا کنید.
           </p>
         </div>
       </div>
