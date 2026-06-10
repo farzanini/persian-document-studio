@@ -1,0 +1,10 @@
+# Coolify: use "Docker Compose" build pack (not Dockerfile).
+# GitHub Actions builds this image on push to main; Coolify only pulls it.
+# GHCR auth: add ghcr.io registry in Coolify if the package is private.
+services:
+  app:
+    image: ghcr.io/farzanini/persian-document-studio:latest
+    pull_policy: always
+    restart: unless-stopped
+    expose:
+      - "80"
