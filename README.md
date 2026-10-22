@@ -1,16 +1,49 @@
-# React + Vite
+# Persian Document Studio
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Persian Document Studio is a browser-based editor for laying out Persian right-to-left documents and exporting them as PDF. Built by Farzan Hosseini ([farzanini](https://github.com/farzanini)), an AI and software engineer.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- Edit document text with a rich-text editor and choose from short and multi-page Persian sample templates.
+- Preview A4 cover and letterhead pages with dynamically paginated content.
+- Adjust typography, margins, page metadata, colors, and preview zoom.
+- Drag document elements to position them on the page.
+- Upload custom cover and letterhead backgrounds and a partner logo; these assets are cached in browser storage.
+- Export the document as a PDF.
 
-## React Compiler
+## Tech stack
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- React 19
+- Vite 8
+- Tailwind CSS 4
+- `html2pdf.js` and `html2canvas-pro` for PDF export
+- Vazirmatn fonts for Persian text
 
-## Expanding the ESLint configuration
+## Getting started
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+Requires Node.js and npm.
+
+```sh
+npm ci
+npm run dev
+```
+
+To create and serve a production build locally:
+
+```sh
+npm run build
+npm run preview
+```
+
+## Project structure
+
+```text
+public/                 Fonts and public icons
+src/
+  components/           Editor, controls, and document preview
+  constants/            Sample document templates
+  utils/                Browser asset storage and pagination
+  App.jsx               Editor state and PDF export
+Dockerfile              Production image build
+docker-compose.yaml     Container service configuration
+```
